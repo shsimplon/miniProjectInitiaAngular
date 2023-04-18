@@ -9,6 +9,6 @@ import { Router } from "@angular/router";
 export class LandingPageComponent {
   constructor(private router: Router) {}
   onContinue() {
-    this.router.navigateByUrl("facesnaps");
+    this.router.navigateByUrl("snaps");
   }
 }
