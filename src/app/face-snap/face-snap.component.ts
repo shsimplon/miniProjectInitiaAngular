@@ -1,29 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
+import { FaceSnape } from "../models/face-snap-models";
+import { FaceSnapService } from "../service/face-snap.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
-  selector: 'app-face-snap',
-  templateUrl: './face-snap.component.html',
-  styleUrls: ['./face-snap.component.scss']
+  selector: "app-face-snap",
+  templateUrl: "./face-snap.component.html",
+  styleUrls: ["./face-snap.component.scss"],
 })
-export class FaceSnapComponent implements OnInit{     
-    title!: string;
-    description!:string;
-    createData!:Date;
-    snaps!:number;
-    imageUrl!: string;
+export class FaceSnapComponent implements OnInit {
+  @Input() faceSnap!: FaceSnape;
+  constructor(
+    private faceSnapService: FaceSnapService,
+    private router: Router
+  ) {}
 
+  buttonText!: string;
+  ngOnInit() {
+    this.buttonText = "Oh Snap!";
+  }
 
-    ngOnInit() {
-    this.title = 'archid';
-  this.description = 'Mon meilleur ami depuis tout petit !';
-  this.createData = new Date();
-  this.snaps = 6;    
-
-this.imageUrl = 'https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg';    
-     }
-
-    onAddSnap(){
-        this.snaps++;
+  onSnap() {
+    if (this.buttonText === "Oh Snap!") {
+      this.faceSnapService.faceSnapById(this.faceSnap.id, "snap");
+      this.buttonText = "Oops, unSnap!";
+    } else {
+      this.faceSnapService.faceSnapById(this.faceSnap.id, "unsnap");
+      this.buttonText = "Oh Snap!";
     }
-    
+  }
+  onViewFaceSnap() {
+    this.router.navigateByUrl(`snaps/${this.faceSnap.id}`);
+  }
 }
